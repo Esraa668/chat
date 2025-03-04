@@ -1,0 +1,77 @@
+<section class="  w-50 mx-auto rounded-3 my-3 p-3">
+    <h1 class="h2 text-main">Register Now:</h1>
+
+    <form [formGroup]="registerGroup" (ngSubmit)="handle()">
+        <!-- Name  -->
+        <div class="mb-2">
+            <label for="name">name:</label>
+            <input type="text" class="form-control mt-1" formControlName="username" id="name" />
+        </div>
+        <div class="alert alert-danger error p-1 m-1 w-50 mx-auto text-center  w-50 mx-auto text-center " *ngIf="
+         registerGroup.get('username')?.errors &&registerGroup.get('username')?.touched
+        ">
+            <p *ngIf="registerGroup.get('username')?.getError('required')" class="mb-0 mt-1 ">
+                <i class="fa-solid fa-triangle-exclamation ps-1"></i>
+                Name Required
+            </p>
+            <p *ngIf="registerGroup.get('username')?.getError('minlength')" class="mb-0 mt-1">
+                <i class="fa-solid fa-triangle-exclamation ps-1"></i>
+                Name Min length
+            </p>
+            <p *ngIf="registerGroup.get('username')?.getError('maxlength')" class="mb-0 mt-1">
+                <i class="fa-solid fa-triangle-exclamation ps-1"></i>
+                Name Max length
+            </p>
+        </div>
+        <!--^ email -->
+        <div class="mb-2">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control mt-1" formControlName="email" id="email" />
+        </div>
+        <div class="alert alert-danger error p-1 m-1 w-50 mx-auto text-center " *ngIf="
+         registerGroup.get('email')?.errors &&registerGroup.get('email')?.touched
+        ">
+            <p *ngIf="registerGroup.get('email')?.getError('required')" class="m-0 my-1">
+                <i class="fa-solid fa-triangle-exclamation ps-1"></i>
+                email Required
+            </p>
+
+            <p *ngIf="registerGroup.get('email')?.getError('email')" class="m-0 my-1">
+                <i class="fa-solid fa-triangle-exclamation ps-1"></i>
+
+                invalid email
+            </p>
+        </div>
+        <!-- * pass -->
+        <div class="mb-2">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control mt-1 " formControlName="password" id="password" />
+        </div>
+        <div class="alert alert-danger error p-1 m-1 w-50 mx-auto text-center " *ngIf="
+          registerGroup.get('password')?.errors &&
+          registerGroup.get('password')?.touched
+        ">
+            <p *ngIf="registerGroup.get('password')?.getError('required')" class="m-0 my-1">
+                <i class="fa-solid fa-triangle-exclamation ps-1"></i>
+                password Required
+            </p>
+
+            <p *ngIf="registerGroup.get('password')?.getError('pattern')" class="m-0 my-1">
+                <i class="fa-solid fa-triangle-exclamation ps-1"></i>
+
+                password must start with upperCase then from 6 to 10
+            </p>
+        </div>
+
+        <button [disabled]="registerGroup.invalid" class="btn-main ms-auto d-block my-2">
+            Register <span *ngIf="load"><i class="fas fa-spin fa-spinner"></i></span>
+        </button>
+
+        <p *ngIf="err" class="p-1 w-50 text-center mb-0 mx-auto alert alert-danger">
+            {{err}}
+        </p>
+
+
+
+    </form>
+</section>

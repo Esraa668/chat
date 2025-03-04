@@ -1,0 +1,103 @@
+<div class="chat-nav p-4">
+    <div class="nav-left">
+        <img src="../../assets/beyon-logo-b.svg" alt="Batelco Logo" class="logo">
+
+    </div>
+    <div class="nav-center">
+        <h3>Chat with Basma</h3>
+    </div>
+    <div class="nav-right">
+        <img src="../../assets/newchat.svg" alt="Notifications" class="icon" (click)="NewChat()">
+        <img src="../../assets/close-white-new.svg" alt="" class="icon" (click)="clearChat()">
+
+    </div>
+</div>
+
+
+<div class="container w-75 m-auto pb-0">
+    <!-- <header class="app-header">
+        <img src="../../assets/basma.svg" alt="" width="50">
+
+    </header> -->
+
+    <!-- slider -->
+    <div *ngIf="showSlider" #carousel id="carouselExampleControls" class="carousel w-100 m-auto pb-5">
+        <div #carouselInner class="carousel-inner" style="display: flex; overflow-x: hidden;">
+            <div *ngFor="let card of cards; let i = index" class="carousel-item" [class.active]="i === 0">
+                <div class="card">
+                    <div class="img-wrapper">
+                        <img [src]="card.img" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ card.title }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button #prevButton class="carousel-control-prev" type="button">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+
+        <button #nextButton class="carousel-control-next" type="button">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- chat -->
+
+
+    <!-- chat -->
+    <div class="chats-container">
+
+        <div class="chats-container" *ngIf="messages.length > 0">
+            <!-- -->
+            <div class="messages">
+                <div *ngFor="let msg of messages" class="message"
+                    [ngClass]="{'user-message': msg.sender === 'user', 'bot-message': msg.sender === 'bot'}">
+                    <img *ngIf="msg.sender === 'bot'" src="../../assets/basma.svg" alt="" class="logo">
+
+                    <span *ngIf="msg.sender === 'bot'" class="message-text">{{ msg.displayedText || msg.text }}</span>
+                    <span *ngIf="msg.sender === 'user'" class="message-text">{{ msg.text }}</span>
+                    <span *ngIf="msg.isLoading" class="loading-dots"></span>
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+    <!-- prompt -->
+    <div class="icon-container-wrapper fixed-bottom">
+        <div class="icon-container me-2">
+            <i class="fa-solid fa-globe"></i>
+
+        </div>
+
+        <!-- <form action="" class="w-100" (ngSubmit)="onSubmit()">
+            <input type="text" class="search-input form-control " placeholder="Ask me anything" [(ngModel)]="userInput"
+                name="userInput">
+            <button class="action-button">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form> -->
+
+        <form class="w-100" (ngSubmit)="onSubmit()">
+            <input type="text" class="search-input form-control chat" placeholder="Ask me anything"
+                [(ngModel)]="userInput" name="userInput" [disabled]="isBotTyping">
+            <button class="action-button" [disabled]="isBotTyping">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form>
+
+
+
+
+    </div>
+
+</div>
