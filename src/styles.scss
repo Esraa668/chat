@@ -1,9 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;0,600;1,600&display=swap");
+
 body {
-  font-family: "Tajawal", sans-serif;
-  background-color: #f5f5f5;
   margin: 0;
   padding: 0;
+  background-color: #f4f5f7;
+
+  height: 100vh;
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  font-style: normal;
 }
 .w-140 {
   width: 140px;
@@ -22,6 +29,11 @@ body {
 .container {
   padding: 40px 0 40px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.ai-container {
+  margin-top: 5px;
+  border-radius: 20px;
 }
 
 .container
@@ -54,28 +66,14 @@ nav {
   transition: padding 1s;
 }
 
-.chat-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #1e2444;
-  color: white;
-  padding: 10px 20px;
-}
-
 .nav-left {
   display: flex;
   align-items: center;
 }
 
 .logo {
-  height: 30px;
-  margin-left: 10px;
-}
-
-.nav-center {
-  font-size: 18px;
-  font-weight: bold;
+  height: 60px;
+  margin-left: 34px;
 }
 
 .nav-right {
@@ -90,45 +88,56 @@ nav {
 }
 
 .chats-container .message {
+  // display: flex;
+  // flex-direction: column; /* Stack elements vertically */
+  // align-items: center;
   display: flex;
   gap: 11px;
   align-items: center;
 }
-.message-text {
-  background-color: #b0b0b0;
-  padding: 5px;
-  border-radius: 0 10px;
+.message-text01 {
+  font-size: 16px;
+  font-weight: 400;
+
+  background-color: rgb(225, 225, 230);
+  padding: 20px;
+  border-radius: 0 10px 10px;
+  margin-top: 8px;
+  margin-right: 35.25rem !important;
+  margin-left: 1.25rem !important;
 }
 .chats-container .message .message-text {
   // padding: 3px 16px;
   word-wrap: break-word;
   white-space: pre-line;
 }
-.chats-container .user-message {
-  flex-direction: column;
-  align-items: flex-end;
-}
+// .chats-container .user-message {
+//   flex-direction: column;
+//   align-items: flex-end;
+// }
 .container .chats-container {
   display: flex;
   gap: 20px;
   flex-direction: column;
 }
 .chats-container .logo {
-  width: 70px !important;
-  height: 70px !important;
-
+  width: 100px !important;
+  height: 100px !important;
+  margin-top: 8px;
   flex-shrink: 0;
   align-self: flex-start;
   padding: 6px;
 }
 .chats-container .user-message .message-text {
   padding: 12px 16px;
-  max-width: 75%;
+  // max-width: 75%;
   border-radius: 13px 13px 3px 13px;
   background-color: #1c2038;
   color: white;
 }
-
+.chats-container {
+  width: 100%;
+}
 .icon-container-wrapper {
   position: relative;
   display: flex;
@@ -222,17 +231,6 @@ nav {
   color: white;
   text-align: center;
 }
-.card .img-wrapper {
-  max-width: 100%;
-  height: 13em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.card img {
-  max-height: 100%;
-}
 
 // .container :is(.app-header, .carousel) {
 //   display: none;
@@ -258,34 +256,32 @@ nav {
   flex: 0 0 33.9%; /* Ensure each card takes 33.33% of the width, showing 3 items */
   display: flex;
   justify-content: center;
+  border-radius: 20px;
   overflow: hidden;
 }
 
 .card {
   margin: 0 0.5em;
   // box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
-  border-radius: 2em;
+  width: 250px;
+  // height: 35vh;
+  border-radius: 20px !important;
   overflow: hidden;
+  margin-block: 20px;
 }
 
 .carousel-control-prev,
 .carousel-control-next {
-  width: 6vh;
-  height: 6vh;
+  width: 5vh;
+  height: 5vh;
   border-radius: 50%;
   top: 50%;
   transform: translateY(-50%);
   background: #1c2038;
 }
 
-.card-body {
-  background: #1c2038;
-  color: white;
-  text-align: center;
-}
-
 .card .img-wrapper {
-  max-width: 100%;
+  max-width: 125%;
   height: 13em;
   display: flex;
   justify-content: center;
@@ -312,6 +308,7 @@ nav {
 }
 .card-title {
   font-size: 16px;
+  padding-inline: 10px;
 }
 .bot-message::after {
   content: "|";
@@ -324,25 +321,42 @@ nav {
   }
 }
 .chat-message {
-  max-width: 80%;
+  // max-width: 80%;
+  text-align: end;
   padding: 10px;
   margin: 5px;
   border-radius: 12px; // Rounded corners
   display: inline-block;
+}
+.user-container {
+  display: flex;
+  margin-left: auto;
+  flex-direction: column;
+  align-items: flex-end !important; // ✅ Aligns both the message and time to the right
+}
 
-  &.user {
-    background-color: #007bff;
-    color: white;
-    align-self: flex-end;
-    border-bottom-right-radius: 0; // Different border for user messages
-  }
+.user {
+  background-color: #1e2844;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 15px;
+  border-bottom-right-radius: 0;
+  display: inline-block; // ✅ Keeps width as fit-content
+  max-width: fit-content; // ✅ Ensures bubble wraps the text
+}
 
-  &.bot {
-    background-color: #f1f1f1;
-    color: black;
-    align-self: flex-start;
-    border-bottom-left-radius: 0; // Different border for bot messages
-  }
+.time01 {
+  color: black;
+  font-size: 12px;
+  text-align: right;
+  margin-top: 5px; // ✅ Adds space between the message and time
+}
+
+.bot {
+  background-color: #f1f1f1;
+  color: black;
+  align-self: flex-start;
+  border-bottom-left-radius: 0; // Different border for bot messages
 }
 .chat:disabled {
   cursor: not-allowed;
@@ -375,7 +389,7 @@ div:where(.swal2-container) button:where(.swal2-styled) :hover {
 .form {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  // width: 50%;
   margin-inline: auto;
 }
 .hi {
@@ -392,4 +406,317 @@ div:where(.swal2-container) button:where(.swal2-styled) :hover {
 .swal2-cancel {
   display: block !important;
   direction: rtl;
+}
+.register {
+  // width: 100%;
+  height: 100vh;
+  // background-color: #af1b33;
+  margin: 0;
+  padding: 0;
+
+  background-color: #995151;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(32, 41, 69, 0);
+  overflow: hidden;
+  // in-height: 100dvh;
+  width: 100vw;
+  background-image: url("https://shop.batelco.com/redBackground.7ae1498bf7213dd7.png");
+  background-size: cover;
+  background-position: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: end;
+  // direction: ltr;
+  // overflow: hidden;
+
+  height: 100vh;
+  width: 100vw;
+  background-image: url("https://shop.batelco.com/redBackground.7ae1498bf7213dd7.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 70%;
+  height: 80vh;
+  max-width: 1140px;
+  margin-top: 80px;
+}
+.imgBasma {
+  margin-top: 20%;
+  width: 90% !important;
+  // height: 650px !important;
+  background-size: cover;
+  // height: 100%;
+  width: fit-content;
+  height: 70% !important;
+  display: flex;
+  justify-content: center;
+}
+.title {
+  // olor: #fff;
+  font-weight: 600;
+  font-size: clamp(12px, 2vw, 36px);
+  text-align: center;
+  text-wrap: balance;
+  width: 100%;
+  line-height: 50px;
+}
+.formTitle {
+  font-size: 22px;
+  text-align: center;
+}
+.form-control {
+  height: 50px;
+  width: 333px;
+  font-size: 16px;
+  font-weight: 300 !important;
+  color: var(--primary) !important;
+  border-width: 1px;
+  border-color: var(--primary);
+  background-color: transparent;
+  border-radius: 0.5rem !important;
+  margin-top: 2px;
+  padding-block: 20px;
+}
+// .containerForm {
+//   width: clamp(470px, 7%, 450px);
+// }
+.btnForm {
+  background: linear-gradient(
+    45deg,
+    rgb(32, 41, 69) 65%,
+    rgb(213, 0, 55) 100%
+  ) !important;
+  transition: background 0.6sease, border 0.6sease;
+  border: none !important;
+}
+.btnForm:hover {
+  background: linear-gradient(45deg, #d50037 65%, #d50037 100%) !important;
+  border: none !important;
+}
+
+/* General Styles */
+
+/* Reset body styles */
+
+/* Navbar at the top */
+
+.chat-nav {
+  font-family: "Kanit", sans-serif;
+  width: 100%;
+  height: 60px;
+  background-color: #1c2b48;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: fixed; /* Fix to top */
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  color: white;
+  padding: 38px !important;
+}
+
+/* Center navbar text */
+.chat-nav .nav-center h3 {
+  margin: 0;
+  font-size: 30px;
+  color: white;
+
+  font-family: "Kanit", sans-serif;
+}
+
+/* Icons in the navbar */
+.chat-nav .icon {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+/* Chat container below navbar */
+.chat-container {
+  width: 75vw;
+  height: 80vh;
+  background: #fff;
+  border-radius: 15px;
+  // overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 50px; /* Push down below navbar */
+  display: flex;
+  flex-direction: column;
+  margin-inline: auto;
+}
+
+/* Chat Box */
+.chat-box {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chat Input */
+.chat-input {
+  display: flex;
+  align-items: center;
+  background: #1c2b48;
+  padding: 15px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Message Styling */
+.message {
+  // max-width: 60%;
+  // padding: 14px;
+  // margin: 10px 0;
+  // position: relative;
+  gap: 5px;
+  border-radius: 15px;
+  font-size: 16px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.time {
+  position: relative;
+  bottom: -47px;
+  right: 156px;
+  font-size: 12px;
+}
+
+/* AI Messages */
+.ai {
+  background: #ececec;
+  color: #333;
+  border-radius: 0 15px 15px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.message.ai .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+/* User Messages */
+.user {
+  margin-left: auto;
+  display: flex;
+  width: fit-content;
+  align-items: flex-end !important;
+  background: #1c2b48;
+  color: #fff;
+  text-align: end !important;
+  border-radius: 20px 20px 0 20px;
+  padding: 14px;
+  text-align: end;
+  display: flex;
+  // align-items: center;
+}
+
+/* Timestamp */
+.timestamp {
+  font-size: 12px;
+  color: gray;
+  display: block;
+  margin-top: 5px;
+}
+
+/* Chat Input */
+.chat-input {
+  display: flex;
+  align-items: center;
+  background: #1c2b48;
+  padding: 15px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.chat-input .icon {
+  color: white;
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.chat-input input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  padding: 12px;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.chat-input .send-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 50%;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.chat-container {
+  width: 75vw;
+  height: 78vh;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chat box: Takes up remaining space and scrolls */
+.chat-box {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto; /* Enables scrolling */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Adds space between messages */
+}
+
+/* Chat input stays at bottom */
+.chat-input {
+  display: flex;
+  align-items: center;
+  background: #1c2b48;
+  padding: 15px;
+  border-top: 2px solid #ccc;
+  position: relative;
+}
+
+/* Make sure input and button don't shrink */
+.chat-input input {
+  flex-grow: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+}
+
+.send-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  margin-left: 10px;
+  cursor: pointer;
 }

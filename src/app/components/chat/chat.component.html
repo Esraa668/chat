@@ -1,4 +1,4 @@
-<div class="chat-nav p-4">
+c<div class="chat-nav ">
     <div class="nav-left">
         <img src="../../assets/beyon-logo-b.svg" alt="Batelco Logo" class="logo">
 
@@ -14,90 +14,108 @@
 </div>
 
 
-<div class="container w-75 m-auto pb-0">
-    <!-- <header class="app-header">
-        <img src="../../assets/basma.svg" alt="" width="50">
 
-    </header> -->
 
-    <!-- slider -->
-    <div *ngIf="showSlider" #carousel id="carouselExampleControls" class="carousel w-100 m-auto pb-5">
-        <div #carouselInner class="carousel-inner" style="display: flex; overflow-x: hidden;">
-            <div *ngFor="let card of cards; let i = index" class="carousel-item" [class.active]="i === 0">
-                <div class="card">
-                    <div class="img-wrapper">
-                        <img [src]="card.img" class="d-block w-100" alt="...">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ card.title }}</h5>
+
+
+<div class="chat-container">
+
+
+
+
+    <div class="home">
+
+        <div *ngIf="showSlider">
+            <div class="ai-container d-flex align-items-center g-5">
+                <img src="../../assets/basma.svg" alt="AI Avatar" class="logo gap-3">
+                <span class="message-text01 ">Good afternoon {{ username}} ! You can select one of the suggested topics
+                    below
+                    to
+                    start a new chat or ask any
+                    other question
+
+
+                </span>
+            </div>
+            <div #carousel id="carouselExampleControls" class="carousel w-75 m-auto pb-5">
+                <div #carouselInner class="carousel-inner" style="display: flex; overflow-x: hidden;">
+                    <div *ngFor="let card of cards; let i = index" class="carousel-item rounded rounded-4"
+                        [class.active]="i === 0">
+                        <div class="card  rounded rounded-4">
+                            <div class="img-wrapper">
+                                <img [src]="card.img" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title  ">{{ card.title }}</h5>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <button #prevButton class="carousel-control-prev" type="button">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+
+                <button #nextButton class="carousel-control-next" type="button">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
+
         </div>
 
-        <button #prevButton class="carousel-control-prev" type="button">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
 
-        <button #nextButton class="carousel-control-next" type="button">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+
+
     </div>
 
-    <!-- chat -->
+
+    <!-- Chat Messages -->
+    <div class="chat-box" *ngIf="messages.length > 0">
+        <div *ngFor="let msg of messages" class=" d-flex"
+            [ngClass]="{'user-msg': msg.sender === 'user', 'ai-msg': msg.sender === 'ai'}">
+
+            <div class="message " *ngIf="msg.sender === 'ai'">
+                <img src="../../assets/basma.svg" alt="AI Avatar" class="logo">
+                <span class=" ai">{{ msg.text }}</span>
+                <span class="time"> {{ chatService.Date | date:'hh:mm a dd/MM/yyyy' }}</span>
 
 
-    <!-- chat -->
-    <div class="chats-container">
+            </div>
+            <!-- 
+            <div class="user  align-items-end text-end" *ngIf="msg.sender === 'user'">
+                <div class="">{{ msg.text }}</div>
+                <span class="time"> {{ chatService.Date | date:'hh:mm a dd/MM/yyyy' }}</span>
 
-        <div class="chats-container" *ngIf="messages.length > 0">
-            <!-- -->
-            <div class="messages">
-                <div *ngFor="let msg of messages" class="message"
-                    [ngClass]="{'user-message': msg.sender === 'user', 'bot-message': msg.sender === 'bot'}">
-                    <img *ngIf="msg.sender === 'bot'" src="../../assets/basma.svg" alt="" class="logo">
 
-                    <span *ngIf="msg.sender === 'bot'" class="message-text">{{ msg.displayedText || msg.text }}</span>
-                    <span *ngIf="msg.sender === 'user'" class="message-text">{{ msg.text }}</span>
-                    <span *ngIf="msg.isLoading" class="loading-dots"></span>
+            </div> -->
 
+            <div class="user-container  align-items-end text-end" *ngIf="msg.sender === 'user'">
+                <div class="user">
+                    <span class="m-0">{{ msg.text }}</span>
                 </div>
+                <span class="time01">{{ chatService.Date | date:'hh:mm a dd/MM/yyyy' }}</span>
             </div>
 
-
-
-
         </div>
-    </div>
-
-    <!-- prompt -->
-    <div class="icon-container-wrapper fixed-bottom">
-        <div class="icon-container me-2">
-            <i class="fa-solid fa-globe"></i>
-
-        </div>
-
-        <!-- <form action="" class="w-100" (ngSubmit)="onSubmit()">
-            <input type="text" class="search-input form-control " placeholder="Ask me anything" [(ngModel)]="userInput"
-                name="userInput">
-            <button class="action-button">
-                <i class="fa-solid fa-paper-plane"></i>
-            </button>
-        </form> -->
-
-        <form class="w-100" (ngSubmit)="onSubmit()">
-            <input type="text" class="search-input form-control chat" placeholder="Ask me anything"
-                [(ngModel)]="userInput" name="userInput" [disabled]="isBotTyping">
-            <button class="action-button" [disabled]="isBotTyping">
-                <i class="fa-solid fa-paper-plane"></i>
-            </button>
-        </form>
 
 
 
 
     </div>
 
+    <!-- Chat Input -->
+    <form (keyup.enter)="sendMessage()">
+
+        <div class="chat-input">
+            <div class="icon"><i class="fa-solid fa-globe"></i></div>
+            <input type="text" placeholder="Ask me anything..." [(ngModel)]="userMessage" name="userInput"
+                [disabled]="isBotTyping" />
+            <button class="send-btn" [disabled]="isBotTyping" (click)="sendMessage()"><i
+                    class="fa-solid fa-paper-plane"></i></button>
+
+
+        </div>
+    </form>
 </div>

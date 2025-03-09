@@ -1,3 +1,4 @@
+import { RegisterComponent } from './../register/register.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import Swal from 'sweetalert2';
@@ -8,10 +9,13 @@ import {
   OnInit,
   ViewChild,
   AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ChatsService } from '../../chats.service';
 import { Router } from '@angular/router';
+import { chatMsg } from '../../models/chatMsg';
+import { UserDATAService } from '../../user-data.service';
 
 interface ChatMessage {
   text: string;
@@ -23,7 +27,7 @@ interface ChatMessage {
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
@@ -36,8 +40,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
   @ViewChild('nextButton', { static: false }) nextButton: ElementRef | null =
     null;
 
-  userInput: string = '';
-  messages: ChatMessage[] = [];
+  // userInput: string = '';
+  // messages: ChatMessage[] = [];
   showSlider: boolean = true;
   chatHistory: any[] = [];
   isBotTyping: boolean = false; // 🔴 Disable user input while bot is typing
@@ -73,10 +77,13 @@ export class ChatComponent implements OnInit, AfterViewInit {
       img: '../../assets/roaming_addon-en.png',
     },
   ];
+  // messages: any;
 
-  constructor(private chatService: ChatsService, private _Router: Router) {}
-
-  ngOnInit(): void {}
+  constructor(
+    public chatService: ChatsService,
+    private _Router: Router,
+    private _UserDATAService: UserDATAService
+  ) {}
 
   ngAfterViewInit(): void {
     if (
@@ -110,48 +117,6 @@ export class ChatComponent implements OnInit, AfterViewInit {
           carouselInner.scrollTo({ left: scrollPosition, behavior: 'smooth' });
         }
       });
-    }
-  }
-
-  onSubmit(): void {
-    if (this.userInput.trim() && !this.isBotTyping) {
-      this.isBotTyping = true; // Disable form while bot is typing
-
-      this.messages.push({ text: this.userInput, sender: 'user' });
-      this.showSlider = false;
-      this.messages.push({
-        text: 'Just a second...',
-        sender: 'bot',
-        isLoading: true,
-      });
-
-      this.chatHistory.push({
-        role: 'user',
-        parts: [{ text: this.userInput }],
-      });
-
-      this.userInput = '';
-
-      this.chatService.generateResponse(this.chatHistory).subscribe(
-        (data) => {
-          console.log(data);
-
-          this.messages.pop(); // Remove loading message
-          const botResponse =
-            data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-            'Sorry, I didn’t understand.';
-          this.addTypingEffect(botResponse);
-        },
-        (error) => {
-          console.error(error);
-          this.messages.pop();
-          this.messages.push({
-            text: 'Error fetching response.',
-            sender: 'bot',
-          });
-          this.isBotTyping = false; // Re-enable form after error
-        }
-      );
     }
   }
 
@@ -190,7 +155,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
       if (result.isConfirmed) {
         this.messages = []; // Clear all chat messages
         this.showSlider = true; // Show the slider again after clearing
-        this.userInput = ''; // Reset input field
+        this.userMessage = ''; // Reset input field
         this._Router.navigate(['auth/register']);
       }
     });
@@ -204,11 +169,66 @@ export class ChatComponent implements OnInit, AfterViewInit {
       confirmButtonColor: '#af1b33', // Optional: Change button color
     }).then((result) => {
       if (result.isConfirmed) {
-        this.messages = []; // Clear all chat messages
-        this.showSlider = true; // Show the slider again after clearing
-        this.userInput = ''; // Reset input field
-        this._Router.navigate(['blank/chat']);
+        this.chatService.createNewChat().subscribe({
+          next: (chatRes: any) => {
+            localStorage.setItem('chatId', chatRes.id);
+            console.log(chatRes.id);
+            const id = chatRes.id;
+            // this.clearChat();
+            this.messages = [];
+            this.showSlider = true;
+
+            this.chatService.connectToWebSocket();
+          },
+          error: (chatErr) => {
+            console.error('Failed to create new chat:', chatErr);
+          },
+        });
       }
     });
+  }
+  userMessage = '';
+  // input=this.chatService.ge
+  messages: { text: string; sender: string }[] = []; // Stores chat history
+  messages01: { text01: string }[] = [];
+
+  username: string = '';
+  ngOnInit() {
+    this.chatService.connectToWebSocket();
+    this.username = this._UserDATAService.getUsername();
+    // Listen for AI responses
+    this.chatService.getMessages().subscribe((message: any) => {
+      // if (message && message.message) {
+      //   if (message.message.user == null) {
+      //     // Store only AI responses
+      //     this.messages.push({ text: message, sender: 'ai' });
+      //     console.log(message.message);
+      //   }
+      // }
+      this.showSlider = false;
+      this.messages.push({ text: message, sender: 'ai' });
+      console.log();
+    });
+  }
+
+  // showSlider:boolean=true
+  sendMessage() {
+    this.showSlider = false;
+
+    if (this.userMessage.trim() !== '') {
+      // Display user message
+      this.messages.push({ text: this.userMessage, sender: 'user' });
+
+      // Send message to WebSocket
+      this.chatService.sendMessage(this.userMessage);
+      console.log(this.userMessage);
+
+      // Clear input field
+      this.userMessage = '';
+    }
+  }
+
+  disconnectChat() {
+    this.chatService.disconnect();
   }
 }

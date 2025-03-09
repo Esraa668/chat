@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ChatsService } from '../../chats.service';
+import { UserDATAService } from '../../user-data.service';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -18,7 +19,11 @@ import { ChatsService } from '../../chats.service';
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
-  constructor(private _ChatsService: ChatsService, private _Router: Router) {}
+  constructor(
+    private _ChatsService: ChatsService,
+    private _Router: Router,
+    private _userData: UserDATAService
+  ) {}
 
   err: string = '';
   load: boolean = false;
@@ -34,21 +39,22 @@ export class RegisterComponent {
       Validators.pattern(/^[a-zA-z0-9_@]{6,}$/),
     ]),
   });
-
+  Name: string = '';
   handle(): void {
     this.load = true;
-    const userDate = this.registerGroup.value;
-    // if (this.registerGroup.valid === true)
-    //   this._ChatsService.register(userDate).subscribe({
-    //     next: (response) => {
-    //       this._Router.navigate(['/login']);
-    //     },
-    //     error: (err) => {
-    //       this.load = false;
-    //       this.err = err.error.message;
-    //     },
-    //   });
+    const userData = this.registerGroup.value; // Correct variable name
 
-    console.log(this.registerGroup);
+    if (this.registerGroup.valid) {
+      this._ChatsService.register(userData).subscribe({
+        next: (response) => {
+          this._userData.setUsername(userData.username); // Store username in service
+          this._Router.navigate(['/login']); // Redirect to chat
+        },
+        error: (err) => {
+          this.load = false;
+          this.err = err.error.message;
+        },
+      });
+    }
   }
 }

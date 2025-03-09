@@ -31,24 +31,46 @@ export class LoginComponent {
 
   handle(): void {
     this.load = true;
-    const loginDate = this.loginGroup.value;
-    if (this.loginGroup.valid === true)
-      this._ChatsService.login(loginDate).subscribe({
+    const loginData = this.loginGroup.value;
+
+    if (this.loginGroup.valid) {
+      this._ChatsService.login(loginData).subscribe({
         next: (response) => {
           console.log(response);
-
           this.load = false;
-          localStorage.setItem('token', response.access_token);
 
-          localStorage.setItem('user_id', response.user.pk); //
+          // Store token & user ID
+          localStorage.setItem('token', response.access_token);
+          localStorage.setItem('user_id', response.user.pk);
+
+          // Decode user data
           this._ChatsService.decodeDate();
-          //programing routing
-          this._Router.navigate(['blank/chat']);
+
+          // Navigate to home and then create a new chat
+          this._Router.navigate(['blank/chat']).then(() => {
+            this._ChatsService.createNewChat().subscribe({
+              next: (chatRes: any) => {
+                localStorage.setItem('chatId', chatRes.id);
+                console.log(chatRes.id);
+                const id = chatRes.id;
+                this._ChatsService.connectToWebSocket();
+              },
+              error: (chatErr) => {
+                console.error('Failed to create new chat:', chatErr);
+              },
+            });
+          });
         },
         error: (err) => {
           this.load = false;
           this.err = err.error.message;
+          console.error('Login failed:', err);
         },
       });
+    }
+  }
+
+  register(): void {
+    this._Router.navigate(['auth/register']);
   }
 }
